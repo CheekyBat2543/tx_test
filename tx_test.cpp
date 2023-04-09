@@ -26,7 +26,7 @@ int main(){
     gpio_put(HIGH_PIN, HIGH);
     gpio_put(TX_CLOCK_PIN, HIGH);
 
-/*-------------------------------------------*/
+/*--------------------------------------------*/
     const char messeage[] = "Hello, World!";
 
     while(1){ 
