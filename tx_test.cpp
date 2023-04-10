@@ -9,7 +9,7 @@
 #define HIGH_PIN 23
 #define TX_PIN 14
 #define TX_CLOCK_PIN 15
-#define TX_RATE 10
+#define TX_RATE 25
 
 class tx { // class for handling data transfer
 public:
@@ -35,6 +35,7 @@ public:
             for(int bit_idx = 0; bit_idx < 8; bit_idx++){
                  
                 bool tx_bit = tx_byte & (0x80 >> bit_idx);
+                printf("%u", tx_bit);
                 gpio_put(tx_pin, tx_bit);
                 gpio_put(LED_GREEN, tx_bit);
                 sleep_ms((1000 / TX_RATE) / 2);
@@ -43,11 +44,14 @@ public:
                 sleep_ms((1000 / TX_RATE) / 2);
                 gpio_put(tx_clock, LOW);
             }
+            printf("\n");
         }
         clearBuffer();
         return true;
     }
-   
+   ~tx(void){
+        printf("Class Destroyed.\n");
+   }
 private:
     u_int8_t tx_pin;
     u_int8_t tx_clock;
@@ -66,6 +70,7 @@ int main(){
     char messeage[] = "Hello, World!";
     bool tx_state = false;
     while(1){
+        sleep_ms(2500);
         while(!tx_state){
             tx_state = sender.transfer(messeage);
         }
