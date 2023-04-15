@@ -13,7 +13,7 @@
 
 class tx { // class for handling data transfer
 public:
-    tx(const uint8_t txpin, const u_int8_t txclock){ // class constructor
+    tx(const uint8_t txpin, const uint8_t txclock){ // class constructor
         tx_pin = txpin;
         tx_clock = txclock;
         gpio_init(tx_pin);
@@ -24,11 +24,8 @@ public:
         gpio_set_dir(LED_GREEN, GPIO_OUT);
         gpio_put(tx_clock, LOW);
     }
-    bool transfer(const char * messeage){
-        uint16_t data_size = strlen(messeage)+1;
-        data = new char[data_size];
-        strncpy(data, messeage, data_size);
-
+    bool transfer(const char * data){
+        uint16_t data_size = strlen(data)+1;
         for(int16_t i = 0; i < data_size; i++){
             char current_byte = data[i];
             char tx_byte = current_byte;
@@ -46,21 +43,15 @@ public:
             }
             printf("\n");
         }
-        clearBuffer();
         return true;
     }
    ~tx(void){
         printf("Class Destroyed.\n");
    }
 private:
-    u_int8_t tx_pin;
-    u_int8_t tx_clock;
+    uint8_t tx_pin;
+    uint8_t tx_clock;
     char * data;
-
-    bool clearBuffer(void){
-        delete[] data;
-        return true;
-    }
 };
 
 int main(){
